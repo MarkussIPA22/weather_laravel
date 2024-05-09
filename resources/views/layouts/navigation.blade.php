@@ -15,7 +15,7 @@
                     {{-- <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link> --}}
-                    <x-nav-link :href="route('weather')" :active="request()->routeIs('weather')">
+                    <x-nav-link :href="route('weather.form')" :active="request()->routeIs('weather.form')">
                         {{ __('Weather') }}
 
                         {{-- <li><a href="{{ route('support') }}">Support Center</a></li> --}}

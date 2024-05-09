@@ -28,8 +28,31 @@
                             <div class="flex lg:justify-center lg:col-start-2">
 
                                 
-                               <h1 style="color: white ">Welcome to WEATHER AI  </h1>  
+                                <h1 id="typing-effect"></h1> 
                                 
+                                <script>
+                                    document.addEventListener('DOMContentLoaded', function() {
+                                        // Text to display
+                                        var text = "Welcome to WEATHER AI";
+                            
+                                        // Speed of typing (in milliseconds)
+                                        var speed = 200;
+                            
+                                        var index = 0;
+                            
+                                        function typeWriter() {
+                                            if (index < text.length) {
+                                                document.getElementById("typing-effect").textContent += text.charAt(index);
+                                                index++;
+                                                setTimeout(typeWriter, speed);
+                                            }
+                                        }
+                            
+                                        typeWriter();
+                                    });
+                                </script>
+                            </body>
+                            </html>
 
                             </div>
                             @if (Route::has('login'))

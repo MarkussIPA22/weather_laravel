@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,8 +9,7 @@
     <style>
     body {
         margin-bottom: 60px;
-        /* Height of the footer */#
-     
+        /* Height of the footer */
     }
 
     .footer {
@@ -26,8 +24,11 @@
     p.card-text {
         margin-top: -10px;
     }
-
     
+    .card {
+        padding: 20px; /* Adjust this value to make the cards bigger */
+        margin-bottom: 20px; /* Add margin-bottom to create space between the cards */
+    }
     </style>
 </head>
 
@@ -37,135 +38,67 @@
         <div class="container">
             <a class="navbar-brand" href="#">Weather App</a>
             <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-             
                 <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                     {{ __('Dashboard') }}
                 </x-nav-link>
+            </div>
         </div>
     </nav>
 
     <div class="container">
         <h1 class="mt-5 mb-4">Weather Application</h1>
+
         <div class="input-group mb-3">
-            <form action="{{ route('weather') }}" method="post" class="form-inline">
+            <form action="{{ route('weather.form') }}" method="post" class="form-inline">
                 @csrf
-               
-            </form>
-            
-            
-                <div class="d-flex">
-                    <div class="form-group">
-                        <input type="text" class="form-control" name="city" id="city" placeholder="Enter city name">
-
-                    </div>
-                    <button style="margin-left: 20px;"  class="btn btn-primary">Search</button>
+                <div class="form-group">
+                    <input type="text" class="form-control" name="city" id="city" placeholder="Enter city name">
                 </div>
+                <button style="margin-left: 20px;"  class="btn btn-primary">Search</button>
             </form>
-
         </div>
-        <div class="row row-cols-1 row-cols-md-3 g-4">
-            <div class="col">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Looks Like</h5>
-                        <br>
-                        <b>--</b>
-                    </div>
-                </div>
 
-              
-
-            </div>
+        <div class="row">
             <div class="col">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Location Details</h5>
-                        <br>
-                        <p class="card-text">Country: 
-                                <b> 
-                                @if(isset($data["sys"]['country']))
-                                {{$data["sys"]['country'] }}
-                                @else
-                                --
-                                @endif 
-                                </b>
-                                </p>                
-                                        <p class="card-text">Name: 
-                                            <b>  
-                                            @if(isset($data["name"]))
-                                            {{$data["name"]}}
-                                            @else
-                                            --
-                                            @endif </b>
-                                        </p>
-
-                        <p class="card-text">Latitude: 
-                            <b>  
-                            @if(isset($data["coord"]['lat']))
-                            {{$data["coord"]['lat']}}
-                            @else
-                            --
-                            @endif  </b>
-                        </p> </b></p>
-
-
-                        <p class="card-text">Longitude:  <b>  
-                            @if(isset($data["coord"]['lon']))
-                        {{$data["coord"]['lon']}}
-                        @else
-                        --
-                        @endif  </b>
-                    </p> </b></p></p>
-                        <p class="card-text">Sunrise: 
-                            @if(isset($data["sys"]['sunrise']))
-                            {{$data["sys"]['sunrise'] }}
-                            @else
-                            --
-                            @endif 
-                        </p>
-                        <p class="card-text">Sunset: 
-                            @if(isset($data["sys"]['sunset']))
-                            {{$data["sys"]['sunset'] }}
-                            @else
-                            --
-                            @endif 
-                        </p>
+                        <p class="card-text">Country: <b>{{ $data["sys"]["country"] ?? "--" }}</b></p>
+                        <p class="card-text">Name: <b><a href="https://www.google.com/search?q={{ $data["name"] ?? "" }}" target="_blank">{{ $data["name"] ?? "--" }}</a></b></p>
+                        <p class="card-text">Latitude: <b>{{ $data["coord"]["lat"] ?? "--" }}</b></p>
+                        <p class="card-text">Longitude: <b>{{ $data["coord"]["lon"] ?? "--" }}</b></p>
+                        <p class="card-text">Sunrise: {{ $data["sys"]["sunrise"] ?? "--" }}</p>
+                        <p class="card-text">Sunset: {{ $data["sys"]["sunset"] ?? "--" }}</p>
                     </div>
                 </div>
             </div>
             <div class="col">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Temperature &deg; C </h5>
-                        <br>
-                        <p class="card-text">Temp: 
-
+                        <h5 class="card-title">Temperature</h5>
+                        <p class="card-text">Temp:
                             @if(isset($data["main"]['temp']))
-                            {{$data["main"]['temp'] }}
+                                {{ $data["main"]['temp'] }} °F =
+                                {{ round(($data["main"]['temp'] - 32) * (5/9)) }} °C
                             @else
-                            --
-                            @endif 
+                                --
+                            @endif
                         </p>
-                        <p class="card-text">Min Temp: 
+                        <p class="card-text">Min Temp:
                             @if(isset($data["main"]['temp_min']))
-                            {{$data["main"]['temp_min'] }}
+                                {{ $data["main"]['temp_min'] }} °F =
+                                {{ round(($data["main"]['temp_min'] - 32) * (5/9)) }} °C
                             @else
-                            --
-                            @endif 
+                                --
+                            @endif
                         </p>
-                        <p class="card-text">Max Temp: 
+                        <p class="card-text">Max Temp:
                             @if(isset($data["main"]['temp_max']))
-                            {{$data["main"]['temp_max'] }}
+                                {{ $data["main"]['temp_max'] }} °F =
+                                {{ round(($data["main"]['temp_max'] - 32) * (5/9)) }} °C
                             @else
-                            --
-                            @endif 
-                        </p>
-                        <p class="card-text">Feels Like: 
-                            @if(isset($data["main"]['feels_like']))
-                            {{$data["main"]['feels_like'] }}
-                            @else
-                            --
-                            @endif 
+                                --
+                            @endif
                         </p>
                     </div>
                 </div>
@@ -174,85 +107,26 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Precipitation &percnt;</h5>
-                        <br>
-                        <p class="card-text">Humidity: 
-                            @if(isset($data["main"]['humidity']))
-                            {{$data["main"]['humidity'] }}
-                            @else
-                            --
-                            @endif 
-                        </p>
-                        <p class="card-text">Pressure: 
-                            @if(isset($data["main"]['humidity']))
-                            {{$data["main"]['pressure'] }}
-                            @else
-                            --
-                            @endif 
-                        </p>
-                        <p class="card-text">Sea Level: 
-                            @if(isset($data["main"]['sea_level']))
-                            {{$data["main"]['sea_level'] }}
-                            @else
-                            --
-                            @endif 
-                        </p>
-                        <p class="card-text">Ground Level: 
-                            @if(isset($data["main"]['grnd_level']))
-                            {{$data["main"]['grnd_level'] }}
-                            @else
-                            --
-                            @endif 
-                        </p>
-                        <p class="card-text">Visibility: 
-                            @if(isset($data["ivisibility"]))
-                                {{$data["visbility"]}} meters
-                            @else
-                                --
-                            @endif 
-                        </p>
-                        
+                        <p class="card-text">Humidity: {{ $data["main"]["humidity"] ?? "--" }}</p>
+                        <p class="card-text">Pressure: {{ $data["main"]["pressure"] ?? "--" }}</p>
+                        <p class="card-text">Sea Level: {{ $data["main"]["sea_level"] ?? "--" }}</p>
+                        <p class="card-text">Ground Level: {{ $data["main"]["grnd_level"] ?? "--" }}</p>
+                        <p class="card-text">Visibility: {{ $data["visibility"] ?? "--" }} meters</p>
                     </div>
                 </div>
             </div>
-
             <div class="col">
                 <div class="card">
-                    <div class="card-body">
+                    <div class="card-body p-2">
                         <h5 class="card-title">Wind m/h</h5>
-                        <br>
-                        <p class="card-text">Speed: 
-                            @if(isset($data["wind"]['speed']))
-                            {{$data["wind"]['speed'] }}
-                            @else
-                            --
-                            @endif 
-                            
-                        </p>
-                        <p class="card-text">Degree: 
-                            @if(isset($data["wind"]['deg']))
-                            {{$data["wind"]['deg'] }}
-                            @else
-                            --
-                            @endif 
-                        </p>
-                        <p class="card-text">Gust: 
-                            @if(isset($data["wind"]['gust']))
-                            {{$data["wind"]['gust'] }}
-                            @else
-                            --
-                            @endif 
-                        </p>
+                        <p class="card-text m-0">Speed: {{ $data["wind"]["speed"] ?? "--" }}</p>
+                        <p class="card-text m-0">Degree: {{ $data["wind"]["deg"] ?? "--" }}</p>
+                        <p class="card-text m-0">Gust: {{ $data["wind"]["gust"] ?? "--" }}</p>
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
-    <br><br>
-
-        
-        </div>
-    </footer>
 </body>
 
 </html>
